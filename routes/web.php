@@ -54,7 +54,7 @@ Route::get('/auth/google/callback', function () {
     return redirect('/')->with('error', 'Metode login Google telah dinonaktifkan.');
 })->name('auth.google.callback');
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Books CRUD (Admin & Petugas) - Terdaftar SEBELUM /books/{id} agar tidak tertangkap sebagai parameter {id}
 Route::middleware(['auth', 'account.active', 'role:admin,petugas'])->group(function () {
