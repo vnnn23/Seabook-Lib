@@ -195,3 +195,12 @@ Route::middleware(['auth', 'account.active', 'role:admin,petugas'])->group(funct
     Route::post('/peminjaman/get-by-code', [PeminjamanController::class, 'getPeminjamanByCode'])->name('peminjaman.getByCode');
     Route::get('/peminjaman/export-pdf', [PeminjamanController::class, 'exportPdf'])->name('peminjaman.exportPdf');
 });
+
+// Fallback untuk menyajikan file storage di shared hosting (InfinityFree) tanpa artisan storage:link
+Route::get('/storage/{path}', function ($path) {
+    $fullPath = storage_path('app/public/' . $path);
+    if (!file_exists($fullPath) || is_dir($fullPath)) {
+        abort(404);
+    }
+    return response()->file($fullPath);
+})->where('path', '.*');
