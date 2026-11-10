@@ -1,0 +1,655 @@
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Layout Utama */
+.container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #fff;
+    border-right: 1px solid #e0e0e0;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.logo {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.logo h2 {
+    color: #2563EB; /* Warna biru SyBook */
+    font-weight: 700;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding-top: 20px;
+}
+
+.sidebar nav ul li a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #666;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar nav ul li.active a {
+    color: #2563EB;
+    background-color: #f0f7ff;
+    border-left: 4px solid #2563EB;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #f9f9f9;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 250px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    background: #fff;
+    padding: 15px 30px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-bar {
+    background: #e9ecef;
+    padding: 8px 15px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    width: 300px;
+}
+
+.search-bar input {
+    border: none;
+    background: transparent;
+    margin-left: 10px;
+    outline: none;
+    width: 100%;
+}
+
+/* Content Body */
+.content-body {
+    padding: 30px;
+}
+
+.categories {
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #888;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.categories a {
+    text-decoration: none;
+    color: #888;
+    margin: 0 5px;
+}
+
+.categories a.active, .categories a:hover {
+    color: #333;
+}
+
+.action-area {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    background-color: #2563EB;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-scan {
+    background-color: #2563EB;
+    color: white;
+    border: none;
+    padding: 8px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.btn-scan:hover {
+    background-color: #1d4ed8;
+}
+
+/* Book Grid */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.book-card {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+}
+
+.book-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.book-card h3 {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.book-card p {
+    padding: 0 10px 10px;
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+}
+
+/* MODAL STYLES (Penting untuk Popup) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Efek redup */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 450px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    text-align: center;
+    width: 100%;
+    font-weight: 600;
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #555;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: #2563EB;
+}
+
+/* Custom File Upload Styling */
+.file-upload-wrapper {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+    color: #666;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.file-upload-wrapper input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.btn-submit {
+    width: 100%;
+    background-color: #2563EB;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* --- Lanjutkan dari CSS sebelumnya --- */
+
+/* Page Title Section */
+.page-title-section {
+    margin-bottom: 20px;
+}
+
+.page-title-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.page-title-section .subtitle {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+.page-title-section .divider {
+    border: 0;
+    border-top: 2px solid #e0e0e0; /* Garis abu-abu tebal */
+}
+
+/* Page Header Flex */
+.page-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-header-flex .title-text h2 {
+    margin-bottom: 10px; /* Tambah jarak antara h2 dan subtitle */
+}
+
+/* Grid Table Styles */
+.table-container {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.grid-table {
+    width: 100%;
+    border-collapse: collapse; /* Menggabungkan border agar jadi satu garis */
+    background-color: white;
+}
+
+.grid-table th {
+    padding: 15px;
+    border: 1px solid #ccc; /* Garis pembatas sel */
+    color: #777;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+}
+
+.grid-table td {
+    padding: 12px;
+    border: 1px solid #ccc; /* Garis pembatas sel */
+    color: #555;
+    font-size: 14px;
+    text-align: center; /* Teks di tengah seperti di gambar */
+    vertical-align: middle;
+}
+
+/* Styling Baris Kosong agar tetap punya tinggi */
+.empty-row td {
+    height: 45px; /* Menjaga tinggi baris meskipun kosong */
+}
+
+/* Tombol Aksi (Hapus) */
+.action-btn-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-icon-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column; /* Icon di atas, teks di bawah */
+    align-items: center;
+    color: #444;
+    transition: color 0.2s;
+}
+
+.btn-icon-delete i {
+    font-size: 16px;
+    margin-bottom: 3px;
+    color: #555;
+}
+
+.btn-icon-delete span {
+    font-size: 10px; /* Ukuran teks 'Hapus' kecil */
+    font-weight: 600;
+}
+
+/* --- Pastikan CSS sebelumnya sudah ada --- */
+
+/* Utility Class untuk Modal yang lebih kecil (seperti di gambar Register Petugas) */
+.modal-content-sm {
+    width: 400px; /* Lebih kecil dari modal tambah buku */
+    max-width: 90%;
+    padding: 30px 40px; /* Padding sedikit lebih besar agar lega */
+}
+
+/* Penyesuaian Header Modal agar text Center */
+.modal-header h3 {
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Tombol Close di pojok kanan atas */
+.close-btn {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+/* Memastikan Input field terlihat rapi */
+.form-group input {
+    height: 45px; /* Tinggi input agar nyaman diketik */
+    border: 1px solid #d1d5db;
+    padding: 0 15px;
+}
+
+/* --- CSS Reset & Base --- */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+body { background-color: #f8f9fa; color: #333; min-height: 100vh; }
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 250px;
+    background: #fff;
+    border-right: 1px solid #e0e0e0;
+    position: fixed;
+    height: 100%;
+    padding-top: 20px;
+}
+.brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2b52d4; /* SyBook Blue */
+    text-align: center;
+    margin-bottom: 40px;
+}
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 25px;
+    color: #666;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.menu-item.active {
+    color: #2b52d4;
+    border-left: 4px solid #2b52d4;
+    background-color: #f0f4ff;
+}
+.menu-item:hover { background-color: #f9f9f9; }
+.menu-item i { margin-right: 15px; width: 20px; } /* Placeholder Icon */
+
+/* --- Main Content --- */
+.main-content {
+    margin-left: 250px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Header --- */
+.header {
+    height: 70px;
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 30px;
+}
+.search-box {
+    background: #e9ecef;
+    border-radius: 20px;
+    padding: 8px 20px;
+    width: 300px;
+    display: flex;
+    align-items: center;
+}
+.search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-size: 13px;
+    color: #555;
+}
+
+/* --- Content Area --- */
+.content-body { padding: 30px; }
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+.page-title h2 { font-size: 20px; font-weight: 700; color: #444; }
+.page-title p { font-size: 12px; color: #888; margin-top: 5px; }
+
+.action-buttons button {
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: none;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.btn-export { background: #2b52d4; color: white; margin-right: 10px; }
+.btn-scan { background: #2b52d4; color: white; }
+
+/* --- Table --- */
+.table-container {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+table { width: 100%; border-collapse: collapse; }
+th, td {
+    padding: 15px;
+    text-align: center; /* Center align like image */
+    font-size: 13px;
+    border-bottom: 1px solid #eee;
+    color: #666;
+}
+th {
+    font-weight: 600;
+    color: #888;
+    background-color: #fcfcfc;
+}
+
+/* Status Badges & Buttons inside table */
+.status-text { font-weight: 500; }
+
+.btn-action {
+    padding: 6px 12px;
+    border-radius: 4px;
+    color: white;
+    border: none;
+    font-size: 11px;
+    cursor: pointer;
+    margin: 0 2px;
+}
+.btn-blue { background-color: #2b52d4; }
+.btn-grey { background-color: #6c757d; } /* Tolak/Batalkan */
+.btn-dark { background-color: #555; } /* Denda */
+
+/* --- Modal (Pop-up) --- */
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    width: 450px;
+    padding: 30px;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.modal-header h3 { font-size: 18px; font-weight: 600; }
+.close-btn { font-size: 24px; cursor: pointer; color: #aaa; background: none; border: none; }
+
+.form-group { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.form-group label { display: block; font-size: 12px; color: #555; margin-bottom: 5px; font-weight: 600; }
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+}
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+}
+.form-value { font-size: 14px; color: #333; display: block; padding: 5px 0; }
+
+.modal-footer { margin-top: 25px; }
+.btn-confirm {
+    width: 100%;
+    background: #2b52d4;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Utility for input group with border bottom only for text labels */
+.input-group-text { border-bottom: 1px solid #ddd; padding-bottom: 5px; }

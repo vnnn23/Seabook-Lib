@@ -1,0 +1,264 @@
+/* ==========================================================================
+   SyBook Motion & Skeleton Design System
+   Pure CSS - Zero heavy external dependencies
+   Hardware-accelerated, responsive, and accessible
+   ========================================================================== */
+
+:root {
+    --motion-duration-enter: 260ms;
+    --motion-duration-leave: 160ms;
+    --motion-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --motion-ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+
+    --motion-progress-height: 3px;
+    --motion-progress-color: #2563eb;
+
+    --skeleton-bg: #e2e8f0;
+    --skeleton-shimmer-color: #f8fafc;
+    --skeleton-radius-sm: 4px;
+    --skeleton-radius: 8px;
+    --skeleton-radius-lg: 12px;
+    --skeleton-radius-full: 9999px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --skeleton-bg: #1e293b;
+        --skeleton-shimmer-color: #334155;
+    }
+}
+
+/* --- 1. Page Enter & Leave Transitions --- */
+@keyframes pageMotionEnter {
+    0% {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes pageMotionLeave {
+    0% {
+        opacity: 1;
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+}
+
+.page-motion-enter {
+    animation: pageMotionEnter var(--motion-duration-enter) var(--motion-ease-out);
+}
+
+.page-motion-leave {
+    animation: pageMotionLeave var(--motion-duration-leave) var(--motion-ease-in) forwards;
+    pointer-events: none;
+}
+
+/* --- Guaranteed Viewport Sticky/Fixed Support --- */
+.navbar,
+nav.navbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 1000 !important;
+    transform: none !important;
+}
+
+#sybookChatWidget {
+    position: fixed !important;
+    bottom: 24px !important;
+    right: 24px !important;
+    z-index: 99999 !important;
+    transform: none !important;
+}
+
+/* View Transitions API (Progressive Enhancement) */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root) {
+    animation: var(--motion-duration-leave) var(--motion-ease-in) both pageMotionLeave;
+}
+
+::view-transition-new(root) {
+    animation: var(--motion-duration-enter) var(--motion-ease-out) both pageMotionEnter;
+}
+
+/* --- 2. Top Navigation Progress Bar (Sleek, Non-blocking) --- */
+#motion-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: var(--motion-progress-height);
+    background: var(--motion-progress-color);
+    z-index: 99999;
+    pointer-events: none;
+    opacity: 0;
+    transition: width 350ms cubic-bezier(0.1, 0.8, 0.2, 1), opacity 150ms ease;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.6);
+}
+
+#motion-progress-bar.active {
+    opacity: 1;
+    width: 78%;
+}
+
+#motion-progress-bar.finished {
+    opacity: 1;
+    width: 100%;
+}
+
+/* --- 3. Reusable Skeleton Components & Shimmer Animation --- */
+@keyframes skeletonShimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--skeleton-bg) 0%,
+        var(--skeleton-shimmer-color) 50%,
+        var(--skeleton-bg) 100%
+    ) !important;
+    background-size: 200% 100% !important;
+    animation: skeletonShimmer 1.6s ease-in-out infinite !important;
+    border-radius: var(--skeleton-radius);
+    pointer-events: none;
+    user-select: none;
+    border: none !important;
+}
+
+.skeleton-text {
+    height: 14px;
+    margin-bottom: 8px;
+    border-radius: var(--skeleton-radius-sm);
+    display: block;
+}
+
+.skeleton-text.heading {
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.skeleton-text.subheading {
+    height: 15px;
+    margin-bottom: 8px;
+}
+
+.skeleton-circle {
+    border-radius: var(--skeleton-radius-full) !important;
+}
+
+.skeleton-card {
+    border-radius: var(--skeleton-radius-lg);
+}
+
+.skeleton-chart {
+    width: 100%;
+    height: 250px;
+    border-radius: var(--skeleton-radius-lg);
+}
+
+/* Skeleton Book Cards Layout */
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.skeleton-book-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+}
+
+.skeleton-book-card .skeleton-cover {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.skeleton-book-card .skeleton-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.skeleton-btn {
+    height: 38px;
+    width: 100%;
+    border-radius: 8px;
+    margin-top: auto;
+}
+
+/* Skeleton Detail Layout */
+.skeleton-detail-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 40px;
+    align-items: start;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 900px) {
+    .skeleton-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Fallback cover styling */
+.no-cover-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--skeleton-bg);
+    color: #94a3b8;
+    text-align: center;
+    border-radius: inherit;
+}
+
+/* --- 4. Accessibility: prefers-reduced-motion --- */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .page-motion-enter,
+    .page-motion-leave {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    .skeleton {
+        animation: none !important;
+    }
+
+    #motion-progress-bar {
+        display: none !important;
+    }
+}

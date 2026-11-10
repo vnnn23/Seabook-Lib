@@ -1,0 +1,236 @@
+/* Reset Dasar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f4f6f9; /* Warna background abu-abu muda khas dashboard */
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Card Style Umum */
+.card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+/* --- Header Section --- */
+.profile-header {
+    text-align: center;
+    padding-top: 30px;
+    position: relative;
+}
+
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b5998, #8b5cf6); /* Gradien Biru-Ungu seperti gambar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: white;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.camera-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #3b5998; /* Warna biru icon kamera */
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tab-link {
+    background: none;
+    border: none;
+    padding: 15px 5px;
+    font-size: 14px;
+    color: #6b7280;
+    cursor: pointer;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.tab-link.active {
+    color: #3b5998; /* Warna biru aktif */
+}
+
+/* Garis bawah biru untuk tab aktif */
+.tab-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; /* Overlap border parent */
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #3b5998;
+}
+
+/* --- Content Section --- */
+.content-area {
+    padding: 30px;
+    min-height: 400px; /* Agar terlihat penuh */
+}
+
+.section-title {
+    color: #3b5998;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.data-group {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.data-group.no-border {
+    border-bottom: none;
+}
+
+.data-group label {
+    display: block;
+    font-size: 13px;
+    color: #9ca3af; /* Warna abu-abu label */
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.data-group .value {
+    font-size: 15px;
+    color: #1f2937;
+    font-weight: 500;
+    min-height: 20px; /* Menjaga spasi jika kosong */
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #555;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: #3b5998;
+}
+
+.btn-submit {
+    width: 100%;
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.show {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 450px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    text-align: center;
+    width: 100%;
+    font-weight: 600;
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
