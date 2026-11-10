@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Chat Layanan Pemustaka - {{ config('app.name', 'SeaBook') }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -580,19 +581,37 @@
                     },
                     body: JSON.stringify({ pesan: text })
                 })
-                .then(res => res.json())
-                .then(data => {
+                .then(res => {
+                    return res.json().then(data => ({ ok: res.ok, status: res.status, data }));
+                })
+                .then(result => {
                     sendBtn.disabled = false;
-                    input.value = '';
-                    if (data.success && data.message) {
-                        appendStaffMessageUI(data.message);
-                        lastMessageId = Math.max(lastMessageId, data.message.id);
+                    if (result.ok && result.data && result.data.success && result.data.message) {
+                        input.value = '';
+                        appendStaffMessageUI(result.data.message);
+                        lastMessageId = Math.max(lastMessageId, result.data.message.id);
                         thread.scrollTop = thread.scrollHeight;
+
+                        // Perbarui tombol status jika sebelumnya 'menunggu'
+                        const takeForm = document.querySelector('.btn-take')?.closest('form');
+                        if (takeForm) {
+                            takeForm.outerHTML = `
+                                <form action="/staff/chat/{{ $selectedPercakapan->id }}/close" method="POST" onsubmit="return confirm('Tandai percakapan ini sebagai selesai?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="btn-action-sm btn-close-chat">
+                                        <i class="fa-solid fa-circle-check"></i> Selesaikan Sesi
+                                    </button>
+                                </form>
+                            `;
+                        }
+                    } else {
+                        const errMsg = (result.data && result.data.message) ? result.data.message : 'Gagal mengirim pesan balasan.';
+                        alert(errMsg);
                     }
                 })
                 .catch(err => {
                     sendBtn.disabled = false;
-                    alert('Gagal mengirim pesan balasan.');
+                    alert('Gagal mengirim pesan balasan: ' + (err.message || 'Koneksi terputus.'));
                 });
             }
 

@@ -12,7 +12,7 @@
         if ($isAdmin) {
             $pendingMembersCount = \App\Models\User::where('status_approval', 'pending')->count();
         }
-        $waitingChatCount = \App\Models\ChatConversation::where('status', 'waiting_staff')->count();
+        $waitingChatCount = \App\Models\ChatPercakapan::where('status', \App\Models\ChatPercakapan::STATUS_MENUNGGU)->count();
     } catch (\Throwable $e) {
         // Fallback aman jika query gagal
     }

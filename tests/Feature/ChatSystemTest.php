@@ -499,4 +499,37 @@ class ChatSystemTest extends TestCase
         $this->assertContains($convPetugas1->id, $aktifIdsAdmin);
         $this->assertContains($convPetugas2->id, $aktifIdsAdmin);
     }
+
+    /**
+     * Test 14: Petugas bisa membalas langsung percakapan yang masih menunggu dan otomatis ditugaskan.
+     */
+    public function test_petugas_bisa_membalas_langsung_percakapan_menunggu_otomatis_assign()
+    {
+        $convMenunggu = ChatPercakapan::create([
+            'UserID' => $this->user1->UserID,
+            'status' => 'menunggu',
+            'mode' => 'petugas',
+            'petugas_id' => null,
+            'terakhir_aktivitas' => now(),
+        ]);
+
+        // Petugas 1 membalas langsung tanpa tombol take
+        $resReply = $this->actingAs($this->petugas1)->postJson(route('chat.reply', $convMenunggu->id), [
+            'pesan' => 'Halo, ini balasan langsung dari petugas!',
+        ]);
+
+        $resReply->assertOk()->assertJson(['success' => true]);
+
+        $convFresh = $convMenunggu->fresh();
+        $this->assertEquals('aktif', $convFresh->status);
+        $this->assertEquals($this->petugas1->UserID, $convFresh->petugas_id);
+        $this->assertEquals('petugas', $convFresh->mode);
+
+        $this->assertDatabaseHas('chat_pesan', [
+            'percakapan_id' => $convMenunggu->id,
+            'pengirim_id' => $this->petugas1->UserID,
+            'pengirim_tipe' => 'petugas',
+            'isi' => 'Halo, ini balasan langsung dari petugas!',
+        ]);
+    }
 }

@@ -148,13 +148,33 @@ class StaffChatController extends Controller
         $currentUser = Auth::user();
         $percakapan = ChatPercakapan::findOrFail($id);
 
-        // Otorisasi: Petugas hanya boleh membalas percakapan yang diambilnya, Admin boleh semua
-        if (!$currentUser->isAdmin() && $percakapan->petugas_id !== $currentUser->UserID) {
-            abort(403, 'Anda bukan petugas yang menangani percakapan ini.');
+        if ($percakapan->status === ChatPercakapan::STATUS_SELESAI) {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Percakapan ini sudah selesai.'
+                ], 400);
+            }
+            return redirect()->back()->with('error', 'Percakapan ini sudah selesai.');
         }
 
-        if ($percakapan->status === ChatPercakapan::STATUS_SELESAI) {
-            return redirect()->back()->with('error', 'Percakapan ini sudah selesai.');
+        // Auto-assign: Jika percakapan masih dalam status 'menunggu' atau belum ada petugas,
+        // langsung tugaskan secara otomatis ke petugas/admin yang sedang membalas ini
+        if (is_null($percakapan->petugas_id) || $percakapan->status === ChatPercakapan::STATUS_MENUNGGU) {
+            $percakapan->update([
+                'petugas_id' => $currentUser->UserID,
+                'status' => ChatPercakapan::STATUS_AKTIF,
+                'mode' => ChatPercakapan::MODE_PETUGAS,
+            ]);
+        } elseif (!$currentUser->isAdmin() && (int) $percakapan->petugas_id !== (int) $currentUser->UserID) {
+            $petugasNama = $percakapan->petugas->nama ?? 'petugas lain';
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Percakapan ini sedang ditangani oleh {$petugasNama}."
+                ], 403);
+            }
+            abort(403, "Percakapan ini sedang ditangani oleh {$petugasNama}.");
         }
 
         $tipePengirim = $currentUser->isAdmin() ? ChatPesan::TIPE_ADMIN : ChatPesan::TIPE_PETUGAS;
@@ -227,7 +247,7 @@ class StaffChatController extends Controller
         $currentUser = Auth::user();
         $percakapan = ChatPercakapan::findOrFail($id);
 
-        if (!$currentUser->isAdmin() && $percakapan->petugas_id !== $currentUser->UserID && $percakapan->status !== ChatPercakapan::STATUS_MENUNGGU) {
+        if (!$currentUser->isAdmin() && (int) $percakapan->petugas_id !== (int) $currentUser->UserID && $percakapan->status !== ChatPercakapan::STATUS_MENUNGGU) {
             abort(403, 'Akses ditolak.');
         }
 
